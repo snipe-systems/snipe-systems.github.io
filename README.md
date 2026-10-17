@@ -11,7 +11,7 @@ https://snipe-systems.github.io/
 - **Snipe Flow** — money media on X (@snipe010) and Instagram (@snipe0100)
 - **The Desk** — options-flow scanner for SPY and QQQ
 - **The Lab** — verification unit: every claim backtested before it ships
-- **Voice Desk** — voice-controlled trade execution software (in development)
+- **Open Outcry** — voice-controlled trade execution software (in development)
 - **Ventures** — new experiments as they launch
 
 ## Library
