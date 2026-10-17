@@ -1,0 +1,77 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "voice-trader"
+version = "0.1.0"
+description = "Voice-controlled trading execution tool with hard safety guarantees"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "voice-trader" }]
+dependencies = [
+    "numpy>=1.24",
+    "PyYAML>=6.0",
+    "python-dotenv>=1.0",
+    "httpx>=0.26",
+]
+
+[project.optional-dependencies]
+audio = [
+    "sounddevice>=0.4.6",
+    "onnxruntime>=1.16",
+]
+stt = [
+    "faster-whisper>=1.0",
+]
+speaker = [
+    "speechbrain>=1.0",
+    "torch>=2.1",
+]
+tts = [
+    "pyttsx3>=2.90",
+]
+broker-alpaca = [
+    "alpaca-py>=0.18",
+]
+broker-binance = [
+    # Binance futures is spoken via signed REST (httpx) - no extra deps needed.
+]
+keys = [
+    "pynput>=1.7",
+]
+ws = [
+    "websockets>=11",
+]
+test = [
+    "pytest>=7.4",
+    "websockets>=11",
+]
+all = [
+    "sounddevice>=0.4.6",
+    "onnxruntime>=1.16",
+    "faster-whisper>=1.0",
+    "speechbrain>=1.0",
+    "torch>=2.1",
+    "pyttsx3>=2.90",
+    "alpaca-py>=0.18",
+    "pynput>=1.7",
+    "pytest>=7.4",
+    "websockets>=11",
+]
+
+[project.scripts]
+voice-trader = "voice_trader.main:main"
+voice-trader-enroll = "voice_trader.voice_auth.enroll:main"
+voice-trader-demo = "voice_trader.scripts.demo_dryrun:main"
+voice-trader-backtest = "voice_trader.scripts.backtest_cli:main"
+voice-trader-serve = "voice_trader.main:serve_main"
+voice-trader-json = "voice_trader.main:json_main"
+voice-trader-key = "voice_trader.scripts.key_cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

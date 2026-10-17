@@ -1,0 +1,12 @@
+.env
+.env.*
+!.env.example
+__pycache__/
+*.pyc
+.venv/
+venv/
+logs/
+config/killswitch
+*.egg-info/
+dist/
+build/
