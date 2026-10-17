@@ -1,0 +1,95 @@
+# voice-trader configuration.
+# All monetary limits are enforced in code (risk engine), not merely suggested.
+
+# ---------------------------------------------------------------------------
+# Mode: paper | live
+# live also requires TRADING_MODE=live in .env AND typing "LIVE" at startup.
+# ---------------------------------------------------------------------------
+mode: paper
+
+# ---------------------------------------------------------------------------
+# Broker selection. Only the active one is instantiated.
+#   alpaca  -> US stocks + options (paper or live)
+#   binance -> crypto perps (testnet)
+#   paper   -> fully local simulation (no external API)
+# ---------------------------------------------------------------------------
+active_broker: paper
+
+broker:
+  alpaca:
+    paper: true
+    base_url: "https://paper-api.alpaca.markets"
+    data_url: "https://data.alpaca.markets"
+  binance:
+    testnet: true
+    base_url: "https://testnet.binancefuture.com"
+
+# ---------------------------------------------------------------------------
+# Risk limits. Every one is checked before confirm AND before execution.
+# ---------------------------------------------------------------------------
+risk:
+  max_order_value: 5000.0          # USD max notional of a single order
+  max_position_per_symbol: 10000.0 # USD max position value per symbol
+  max_daily_loss: 500.0            # USD max realized loss per day (paper: simulated)
+  max_trades_per_day: 25           # max fills per day
+  max_open_orders: 10              # max simultaneous open orders
+  confirm_required: true           # MUST stay true; the confirm gate is hard-coded
+  emergency_confirm: true          # flatten/cancel-everything still need one "confirm"
+  duplicate_window_seconds: 300    # identical order within this window is blocked
+  price_stale_tolerance_pct: 2.0   # re-quote + re-confirm if price moved > this
+  require_market_open: true        # block execution when market is closed
+
+# ---------------------------------------------------------------------------
+# Audio + push-to-talk.
+# ---------------------------------------------------------------------------
+audio:
+  sample_rate: 16000
+  device: null                     # null -> system default microphone
+  push_to_talk_key: "f9"          # global hotkey (pynput); empty -> terminal Enter
+  min_record_seconds: 0.3
+  max_record_seconds: 15.0
+  silence_stop_seconds: 1.2        # stop after this much trailing silence
+
+# ---------------------------------------------------------------------------
+# Speech-to-text (local Whisper via faster-whisper).
+# ---------------------------------------------------------------------------
+stt:
+  model_size: "base"               # tiny / base / small / medium / large-v3
+  device: "auto"                   # auto / cpu / cuda
+  compute_type: "auto"
+  language: null                   # null -> auto-detect
+
+# ---------------------------------------------------------------------------
+# Speaker verification (speechbrain ECAPA embeddings).
+# ---------------------------------------------------------------------------
+voice_auth:
+  enabled: false                   # flipped true by enrollment
+  required: false                  # true -> non-enrolled voice cannot execute
+  model_dir: "config/voice_profile"
+  threshold: 0.55                  # cosine similarity threshold for a match
+  enrollment_phrases: 5
+
+# ---------------------------------------------------------------------------
+# Text-to-speech (local, pyttsx3). Set enabled: false to silence it.
+# ---------------------------------------------------------------------------
+tts:
+  enabled: true
+
+# ---------------------------------------------------------------------------
+# HTTP / WebSocket API + key management.
+# ---------------------------------------------------------------------------
+api:
+  host: "127.0.0.1"            # bind 0.0.0.0 only if you really need network access
+  port: 8010                   # HTTP API
+  ws_port: 8011                # WebSocket API
+  require_auth: false          # true -> clients need an API key (Bearer / ws auth)
+  key_file: "config/api_keys.json"   # key hashes stored here (never plaintext)
+
+# ---------------------------------------------------------------------------
+# Journal + kill switch.
+# ---------------------------------------------------------------------------
+journal:
+  path: "journal/trades.csv"
+
+killswitch:
+  path: "config/killswitch"        # create this file (any content) to halt execution
