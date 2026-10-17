@@ -17,3 +17,11 @@ https://snipe-systems.github.io/
 ## Library
 
 Articles, stories, and research reports live on the site under Library — entry 001 is the voice trading agents article.
+
+## Contributing
+
+This project is open to contributions under Apache-2.0. See [CONTRIBUTING.md](CONTRIBUTING.md) for how to add a Library piece, fix something, or propose an idea. The short version: fork, branch, preview locally, open a pull request — and every fact in a Library piece needs a source.
+
+## License
+
+Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE).
